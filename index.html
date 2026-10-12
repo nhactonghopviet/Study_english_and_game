@@ -74,9 +74,10 @@
 
     /* MÀN HÌNH GAME MAIN */
     #game-screen { display: none; width: 100%; max-width: 680px; flex-direction: column; align-items: center; }
-    .top-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px; }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
     .btn-back-units { background: #718096; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
     .btn-high-scores { background: #d69e2e; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    .coin-display { background: #feebc8; color: #b7791f; border: 1px solid #f6ad55; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 14px; display: inline-flex; align-items: center; gap: 5px; }
 
     .navbar { display: flex; gap: 6px; margin-bottom: 15px; flex-wrap: wrap; justify-content: center; }
     .nav-btn {
@@ -354,7 +355,8 @@
   <div id="game-screen">
     <div class="top-bar">
       <h1 style="font-size: 20px;" id="current-unit-title">🎮 Unit 1</h1>
-      <div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div class="coin-display" id="coin-display-box">🪙 <span id="user-coin-count">0</span> xu</div>
         <button class="btn-high-scores" onclick="openScoreModal()">🏆 BXH Điểm Cao</button>
         <button class="btn-back-units" onclick="returnToUnitScreen()">📚 Đổi Unit</button>
         <button onclick="logoutUser()" style="background: #e53e3e; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-left: 5px;">Đăng xuất</button>
@@ -757,12 +759,39 @@
     };
     firebase.initializeApp(firebaseConfig);
 
+    // Quản lý Xu người chơi
+    let userCoins = parseInt(localStorage.getItem('user_total_coins')) || 0;
+    function updateCoinDisplay() {
+      const el = document.getElementById('user-coin-count');
+      if (el) el.innerText = userCoins;
+      localStorage.setItem('user_total_coins', userCoins);
+    }
+
+    function addCoinRandomly() {
+      // Tỷ lệ nhận xu khi trả lời đúng là 3%
+      if (Math.random() < 0.03) {
+        userCoins += 1;
+        updateCoinDisplay();
+        // Hiệu ứng thông báo nhận xu nhỏ
+        showCoinEffect();
+      }
+    }
+
+    function showCoinEffect() {
+      let notif = document.createElement('div');
+      notif.innerText = "+1 🪙 Xu thưởng!";
+      notif.style.cssText = "position:fixed; top:20px; right:20px; background:#feebc8; color:#b7791f; border:2px solid #f6ad55; padding:8px 16px; border-radius:20px; font-weight:bold; z-index:99999; box-shadow:0 4px 10px rgba(0,0,0,0.1); animation: fadeInOut 1.5s forwards;";
+      document.body.appendChild(notif);
+      setTimeout(() => notif.remove(), 1500);
+    }
+
     // Lắng nghe trạng thái xác thực đăng nhập
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('unit-screen').style.display = 'block';
         initUnitGrid();
+        updateCoinDisplay();
       } else {
         document.getElementById('login-screen').style.display = 'flex';
         document.getElementById('unit-screen').style.display = 'none';
@@ -1093,6 +1122,7 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
         btn.onclick = () => {
           if (c === correctVal) {
             playSoundCorrect();
+            addCoinRandomly();
             btn.classList.add('correct-ans');
             setTimeout(() => {
               relearnProgress.testIndex++;
@@ -1113,6 +1143,7 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
       const val = document.getElementById('relearn-input').value.trim().toLowerCase();
       if (val === q.item.word.toLowerCase()) {
         playSoundCorrect();
+        addCoinRandomly();
         relearnProgress.testIndex++;
         saveWrongVocab();
         showRelearnTestQuestion();
@@ -1456,6 +1487,7 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
 
       if (userWord.toLowerCase() === correctWord.toLowerCase()) {
         playSoundCorrect(); scrambleScore += 10;
+        addCoinRandomly();
         resBox.className = 'scramble-result-box success';
         resBox.innerHTML = `
           <div style="font-size:24px;">🎉 Tuyệt vời! Ghép đúng rồi!</div>
@@ -1508,6 +1540,7 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
 
           if (firstCard.dataset.id === secondCard.dataset.id) {
             playSoundCorrect();
+            addCoinRandomly();
             firstCard.classList.add('matched'); secondCard.classList.add('matched');
             memMatches++; firstCard = secondCard = null; lockMem = false;
             if (memMatches === subList.length) {
@@ -1571,6 +1604,7 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
 
           if (c === item.meaning) { 
             btn.classList.add('correct-ans'); playSoundCorrect(); quizScore += 10; 
+            addCoinRandomly();
           } else { 
             btn.classList.add('wrong-ans'); playSoundWrong(); 
             recordWrongWord(item);
@@ -1627,6 +1661,7 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
       if (selEn && selVi) {
         if (selEn.dataset.id === selVi.dataset.id) {
           playSoundCorrect();
+          addCoinRandomly();
           selEn.classList.add('done'); selVi.classList.add('done');
           selEn.classList.remove('selected'); selVi.classList.remove('selected');
           selEn = selVi = null; matchScore += 10; matchDoneCount++;
@@ -1689,6 +1724,7 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
 
           if (c === item.word) { 
             btn.classList.add('correct-ans'); playSoundCorrect(); fillScore += 10; 
+            addCoinRandomly();
           } else { 
             btn.classList.add('wrong-ans'); playSoundWrong(); 
             recordWrongWord(item);
@@ -1743,6 +1779,7 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
               w.active = false;
               if (w.word === catcherTarget.word) {
                 playSoundCorrect(); catcherScore += 1;
+                addCoinRandomly();
                 registerScore('catcher', catcherScore);
                 document.getElementById('catcher-score').innerText = `Điểm: ${catcherScore}`;
                 spawnCatcherBatch(); break;
@@ -1823,6 +1860,7 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
             if (Math.hypot(t.x - a.x, t.y - a.y) < BUBBLE_RADIUS) {
               if (t.word === shooterTarget.word) { 
                 playSoundCorrect(); shooterScore += 10;
+                addCoinRandomly();
                 registerScore('shooter', shooterScore); nextShooterTarget(); 
               } else { 
                 playSoundWrong(); shooterScore = Math.max(0, shooterScore - 5);
@@ -1878,6 +1916,7 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
         if (input.value.trim().toLowerCase() === typingTarget.word.toLowerCase()) {
           playSoundCorrect(); 
           typingScore += 10; 
+          addCoinRandomly();
           typingTime = 15;
           nextTypingWord(); 
           input.value = '';
@@ -1960,7 +1999,10 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
         if (ateFoodIndex !== -1) {
           let eatenFood = foods[ateFoodIndex];
           if (eatenFood.isCorrect) {
-            playSoundCorrect(); snakeScore += 1; updateSnakeScoreDisplay(); nextSnakeTarget();
+            playSoundCorrect(); 
+            snakeScore += 1; 
+            addCoinRandomly();
+            updateSnakeScoreDisplay(); nextSnakeTarget();
           } else {
             playSoundWrong(); snakeScore = Math.max(0, snakeScore - 1);
             recordWrongWord(snakeTarget);
@@ -2137,6 +2179,7 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
 
       if (isCorrect) {
         playSoundCorrect();
+        addCoinRandomly();
         castRpgSkill(() => {
           let dmg = 20 + rpgHero.lvl * 3;
           rpgBoss.hp = Math.max(0, rpgBoss.hp - dmg);
@@ -2610,6 +2653,7 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
     }
 
     function srHandleCorrect() {
+      addCoinRandomly();
       srAutoNextTimeout = setTimeout(() => {
         let task = srTaskQueue.shift();
         if (task && srWordProgressMap[task.wordId]) {
