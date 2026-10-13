@@ -85,6 +85,8 @@
       border-radius: 20px; background: #ffffff; color: #2b6cb0; cursor: pointer;
     }
     .nav-btn.active { background-color: #3182ce; color: #ffffff; border-color: #3182ce; }
+    .nav-btn.mission-btn { background-color: #ed8936; color: white; border-color: #dd6b20; animation: pulseMission 1.5s infinite; }
+    @keyframes pulseMission { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
     .game-card {
       width: 100%; background: #ffffff; padding: 20px;
@@ -127,37 +129,87 @@
     .scramble-result-box.success { background: #f0fff4; border: 2px solid #38a169; color: #22543d; }
     .scramble-result-box.wrong { background: #fff5f5; border: 2px solid #e53e3e; color: #742a2a; }
 
-    /* RPG */
+    /* --- RPG BATTLE & SHOP STYLES (Chuẩn nhanchiaupdate.html) --- */
     .rpg-battle-field {
-      width: 100%; height: 250px; border-radius: 12px; border: 3px solid #3182ce; position: relative; overflow: hidden;
+      width: 100%; height: 240px; border-radius: 12px; border: 3px solid #3182ce; position: relative; overflow: hidden;
       background: linear-gradient(to bottom, #1a202c 0%, #2d3748 50%, #22543d 50%, #1c4532 100%);
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.8); margin-bottom: 15px;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.8); margin-bottom: 12px;
     }
+    .rpg-top-buttons { position: absolute; top: 8px; right: 8px; z-index: 30; display: flex; gap: 5px; }
+    .rpg-btn-action {
+      background: #d69e2e; color: white; border: 2px solid #fff; padding: 5px 10px;
+      border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3); transition: transform 0.1s;
+    }
+    .rpg-btn-action.shop-btn { background: #3182ce; }
+    .rpg-btn-action:active { transform: scale(0.95); }
+
     .rpg-ground { position: absolute; top: 50%; width: 100%; height: 2px; background: rgba(255,255,255,0.2); }
-    .rpg-entity { position: absolute; bottom: 20px; display: flex; flex-direction: column; align-items: center; transition: all 0.5s ease; user-select: none; }
-    .rpg-entity.hero { left: 30px; z-index: 10; }
-    .rpg-entity.boss { right: 30px; z-index: 5; }
-    .rpg-avatar { font-size: 55px; filter: drop-shadow(0 8px 4px rgba(0,0,0,0.6)); position: relative; }
-    .rpg-info-card { background: rgba(15, 23, 42, 0.85); padding: 4px 8px; border-radius: 8px; font-size: 11px; text-align: center; margin-bottom: 6px; border: 1px solid #475569; width: 120px; color: #fff; }
-    .rpg-name-row { display: flex; justify-content: space-between; font-weight: bold; color: #fbbf24; margin-bottom: 3px; }
-    .rpg-hp-bg { background: #334155; height: 10px; border-radius: 5px; overflow: hidden; position: relative; border: 1px solid #1e293b; }
+    .rpg-entity { position: absolute; bottom: 15px; display: flex; flex-direction: column; align-items: center; transition: all 0.5s ease; user-select: none; }
+    .rpg-entity.hero { left: 20px; z-index: 10; }
+    .rpg-entity.boss { right: 20px; z-index: 5; }
+    
+    .rpg-hero-img {
+      width: 110px; height: 60px; object-fit: contain;
+      filter: drop-shadow(0 6px 4px rgba(0,0,0,0.6)); transition: transform 0.2s;
+    }
+    .rpg-hero-avatar-text {
+      font-size: 48px; filter: drop-shadow(0 6px 4px rgba(0,0,0,0.6)); transition: transform 0.2s;
+    }
+
+    @keyframes heroAttackAction {
+      0% { transform: translateX(0) scale(1) rotate(0deg); }
+      30% { transform: translateX(-10px) scale(0.95) rotate(-5deg); }
+      50% { transform: translateX(35px) scale(1.15) rotate(8deg); }
+      100% { transform: translateX(0) scale(1) rotate(0deg); }
+    }
+    .rpg-hero-img.attacking, .rpg-hero-avatar-text.attacking {
+      animation: heroAttackAction 0.4s ease-in-out;
+    }
+
+    .rpg-avatar { font-size: 48px; filter: drop-shadow(0 6px 4px rgba(0,0,0,0.6)); position: relative; }
+
+    .rpg-info-card { background: rgba(15, 23, 42, 0.85); padding: 3px 6px; border-radius: 6px; font-size: 10px; text-align: center; margin-bottom: 5px; border: 1px solid #475569; width: 110px; color: #fff; }
+    .rpg-name-row { display: flex; justify-content: space-between; font-weight: bold; color: #fbbf24; margin-bottom: 2px; }
+    .rpg-hp-bg { background: #334155; height: 9px; border-radius: 4px; overflow: hidden; position: relative; border: 1px solid #1e293b; }
     .rpg-hp-fill { height: 100%; width: 100%; transition: width 0.3s; }
     .hero .rpg-hp-fill { background: linear-gradient(90deg, #22c55e, #4ade80); }
     .boss .rpg-hp-fill { background: linear-gradient(90deg, #ef4444, #f87171); }
-    .rpg-hp-text { position: absolute; top: 0; left: 0; width: 100%; height: 100%; font-size: 8px; font-weight: bold; display: flex; align-items: center; justify-content: center; color: #fff; text-shadow: 1px 1px 1px #000; }
-    .rpg-exp-bar-container { background: #0f172a; padding: 6px 12px; border-radius: 8px; margin-bottom: 12px; border: 1px solid #334155; color: #fff; }
-    .rpg-exp-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; color: #38bdf8; margin-bottom: 4px; }
-    .rpg-exp-bg { background: #334155; height: 8px; border-radius: 4px; overflow: hidden; }
+    .rpg-hp-text { position: absolute; top: 0; left: 0; width: 100%; height: 100%; font-size: 7px; font-weight: bold; display: flex; align-items: center; justify-content: center; color: #fff; text-shadow: 1px 1px 1px #000; }
+    
+    .rpg-exp-bar-container { background: #0f172a; padding: 5px 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #334155; color: #fff; }
+    .rpg-exp-header { display: flex; justify-content: space-between; font-size: 10px; font-weight: bold; color: #38bdf8; margin-bottom: 3px; }
+    .rpg-exp-bg { background: #334155; height: 7px; border-radius: 3px; overflow: hidden; }
     .rpg-exp-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #0284c7, #38bdf8); transition: width 0.3s; }
-    .rpg-item-drop { position: absolute; bottom: 30px; font-size: 28px; opacity: 0; transition: all 0.5s; z-index: 8; }
+    
+    .rpg-item-drop { position: absolute; bottom: 25px; font-size: 24px; opacity: 0; transition: all 0.5s; z-index: 8; }
     .rpg-item-drop.active { opacity: 1; animation: bounceItem 1s infinite alternate; }
-    @keyframes bounceItem { 0% { transform: translateY(0); } 100% { transform: translateY(-8px); } }
-    .rpg-portal { position: absolute; right: 50px; bottom: 20px; font-size: 55px; opacity: 0; transform: scale(0); transition: all 0.5s; animation: spinPortal 2.5s linear infinite; z-index: 2; }
+    @keyframes bounceItem { 0% { transform: translateY(0); } 100% { transform: translateY(-6px); } }
+    .rpg-portal { position: absolute; right: 40px; bottom: 15px; font-size: 45px; opacity: 0; transform: scale(0); transition: all 0.5s; animation: spinPortal 2.5s linear infinite; z-index: 2; }
     .rpg-portal.active { opacity: 1; transform: scale(1); }
     @keyframes spinPortal { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .rpg-skill-fx { position: absolute; font-size: 24px; z-index: 50; pointer-events: none; transition: all 0.4s linear; }
-    .rpg-float-num { position: absolute; font-size: 18px; font-weight: bold; animation: floatUp 0.8s ease-out forwards; pointer-events: none; z-index: 100; text-shadow: 1px 1px 2px #000; }
-    @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-30px); } }
+    .rpg-float-num { position: absolute; font-size: 16px; font-weight: bold; animation: floatUp 0.8s ease-out forwards; pointer-events: none; z-index: 100; text-shadow: 1px 1px 2px #000; }
+    @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-25px); } }
+
+    /* MODAL KHO ĐỒ & CỬA HÀNG */
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; padding: 10px; }
+    .modal-content { background: #fff; width: 100%; max-width: 480px; border-radius: 12px; padding: 15px; box-shadow: 0 6px 20px rgba(0,0,0,0.25); max-height: 85vh; overflow-y: auto; text-align: center; }
+    .bag-grid, .shop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+    .bag-slot, .shop-slot {
+      background: #f7fafc; border: 2px solid #cbd5e0; border-radius: 8px; padding: 8px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: pointer; position: relative; min-height: 85px; transition: all 0.2s;
+    }
+    .bag-slot:hover, .shop-slot:hover { border-color: #3182ce; background: #ebf8ff; }
+    .item-icon { font-size: 24px; margin-bottom: 3px; }
+    .item-img-preview { width: 36px; height: 24px; object-fit: contain; margin-bottom: 3px; }
+    .item-name { font-size: 10px; font-weight: bold; color: #2d3748; text-align: center; }
+    .item-price { font-size: 9px; font-weight: bold; color: #dd6b20; margin-top: 2px; }
+    .bag-item-count {
+      position: absolute; top: 3px; right: 5px; background: #e53e3e; color: #fff;
+      font-size: 9px; font-weight: bold; padding: 1px 4px; border-radius: 8px;
+    }
 
     /* CSS MÀN HÌNH BẮT BUỘC ÔN TỪ SAI */
     #relearn-screen {
@@ -375,6 +427,7 @@
       <button class="nav-btn" onclick="switchTab('snake')">🐍 Rắn ăn từ</button>
       <button class="nav-btn" onclick="switchTab('battle')">⚔️ RPG Chiến Đấu</button>
       <button class="nav-btn" style="background:#4f46e5; color:white;" onclick="switchTab('spacedRepetition')">🧠 Spaced Repetition</button>
+      <button class="nav-btn mission-btn" id="mission-nav-btn" onclick="startMission()" style="display: none;">🎯 Nhiệm vụ (+5 Xu)</button>
     </div>
 
     <!-- 0. GHÉP TỪ -->
@@ -462,38 +515,44 @@
       <div class="status-text" id="snake-score-display">Điểm: 0 | Đúng: +1 điểm | Sai: -1 điểm</div>
     </div>
 
-    <!-- 9. RPG CHIẾN ĐẤU -->
+    <!-- 9. RPG CHIẾN ĐẤU (Chuẩn giao diện nhanchiaupdate.html) -->
     <div id="game-battle" class="game-card">
       <div class="rpg-battle-field" id="rpg-arena">
+        <div class="rpg-top-buttons">
+          <button class="rpg-btn-action shop-btn" onclick="openShopModal()">🛒 Cửa Hàng</button>
+          <button class="rpg-btn-action" onclick="openBagModal()">🎒 Kho (<span id="bag-total-count">0</span>)</button>
+        </div>
         <div class="rpg-ground"></div>
         <div class="rpg-entity hero" id="rpg-hero">
           <div class="rpg-info-card">
-            <div class="rpg-name-row"><span>Dũng Sĩ</span><span id="rpg-hero-lvl">Lv.1</span></div>
+            <div class="rpg-name-row"><span id="rpg-hero-name-label">Nam Chiến Binh</span><span id="rpg-hero-lvl">Lv.1</span></div>
             <div class="rpg-hp-bg">
               <div id="rpg-hero-hp-fill" class="rpg-hp-fill" style="width: 100%;"></div>
               <div id="rpg-hero-hp-text" class="rpg-hp-text">100/100</div>
             </div>
           </div>
-          <div class="rpg-avatar" id="rpg-hero-avatar">🧙‍♂️</div>
+          <div id="rpg-hero-avatar-wrapper">
+            <img src="https://lh3.googleusercontent.com/d/1BnTV5lSFDczPcC_sc5WxJI2olS6fAssQ" alt="Nam Chiến Binh" class="rpg-hero-img" id="rpg-hero-img">
+          </div>
         </div>
         <div class="rpg-entity boss" id="rpg-boss">
           <div class="rpg-info-card">
-            <div class="rpg-name-row"><span id="rpg-boss-name">Boss</span><span id="rpg-boss-lvl">Lv.1</span></div>
+            <div class="rpg-name-row"><span id="rpg-boss-name">Quái vật</span><span id="rpg-boss-lvl">Lv.1</span></div>
             <div class="rpg-hp-bg">
               <div id="rpg-boss-hp-fill" class="rpg-hp-fill" style="width: 100%;"></div>
               <div id="rpg-boss-hp-text" class="rpg-hp-text">100/100</div>
             </div>
           </div>
-          <div class="rpg-avatar" id="rpg-boss-avatar">🍄</div>
+          <div class="rpg-avatar" id="rpg-boss-avatar">👾</div>
         </div>
-        <div class="rpg-item-drop" id="rpg-drop-hp" style="right: 140px;">🧪</div>
-        <div class="rpg-item-drop" id="rpg-drop-exp" style="right: 90px;">📜</div>
+        <div class="rpg-item-drop" id="rpg-drop-hp" style="right: 120px;">🧪</div>
+        <div class="rpg-item-drop" id="rpg-drop-exp" style="right: 80px;">📜</div>
         <div class="rpg-portal" id="rpg-portal">🌀</div>
       </div>
 
       <div class="rpg-exp-bar-container">
         <div class="rpg-exp-header">
-          <span>Tiến Trình Skill (<span id="rpg-skill-name">Cấp 1: Hỏa Cầu 🔥</span>)</span>
+          <span>Kỹ Năng Đang Dùng (<span id="rpg-skill-name">Hỏa Cầu 🔥</span>)</span>
           <span id="rpg-exp-text">0% / 100%</span>
         </div>
         <div class="rpg-exp-bg">
@@ -501,8 +560,18 @@
         </div>
       </div>
 
-      <div style="text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #2b6cb0;" id="battle-word">Word</div>
-      <div class="options-grid" id="battle-options"></div>
+      <div class="word-title" id="battle-word" style="font-size: 22px; margin-bottom: 4px;">Word</div>
+      
+      <!-- Khung Trắc Nghiệm RPG -->
+      <div id="battle-quiz-container">
+        <div class="options-grid" id="battle-options"></div>
+      </div>
+
+      <!-- Khung Gõ Từ RPG -->
+      <div id="battle-typing-container" style="display: none;">
+        <input type="text" id="battle-typing-input" class="type-input" placeholder="Gõ nghĩa/từ rồi Enter..." autocomplete="off">
+      </div>
+
       <div class="status-text" id="battle-status">Chọn đúng nghĩa tiếng Việt để tung Skill đánh quái!</div>
     </div>
 
@@ -717,6 +786,15 @@
         </div>
       </div>
     </div>
+
+    <!-- 11. TAB NHIỆM VỤ ĐẶC BIỆT (Học 15 từ mới, 2 lượt x 4 phương pháp) -->
+    <div id="game-mission" class="game-card">
+      <div class="word-title" id="mission-question" style="font-size: 24px;">Nhiệm vụ học từ vựng</div>
+      <div id="mission-content-area" style="width: 100%; text-align: center;">
+        <!-- Render động nội dung nhiệm vụ -->
+      </div>
+      <div class="status-text" id="mission-status">Thử thách hoàn thành 15 từ mới với 2 lượt qua 4 phương pháp để nhận thưởng 5 xu!</div>
+    </div>
   </div>
 
   <!-- MODAL BẢNG XẾP HẠNG -->
@@ -725,6 +803,26 @@
       <h2 style="color: #2b6cb0; margin-top: 0;">🏆 Top 3 Điểm Cao (Unit <span id="modal-unit-num">1</span>)</h2>
       <div id="modal-scores-container"></div>
       <button style="padding: 10px 20px; background: #3182ce; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px;" onclick="closeScoreModal()">Đóng</button>
+    </div>
+  </div>
+
+  <!-- Modal KHO ĐỒ RPG (BAG) -->
+  <div id="bagModal" class="modal">
+    <div class="modal-content">
+      <h2 style="color: #2b6cb0; margin-top: 0; font-size: 18px;">🎒 Kho Đồ & Trang Bị</h2>
+      <p style="font-size: 12px; color: #4a5568; margin-bottom: 8px;">Nhấn vào vật phẩm hoặc Skin để sử dụng / Trang bị:</p>
+      <div class="bag-grid" id="bag-grid-container"></div>
+      <button style="padding: 8px 20px; background: #3182ce; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 8px;" onclick="closeBagModal()">Đóng</button>
+    </div>
+  </div>
+
+  <!-- Modal CỬA HÀNG RPG (SHOP) -->
+  <div id="shopModal" class="modal">
+    <div class="modal-content">
+      <h2 style="color: #2b6cb0; margin-top: 0; font-size: 18px;">🛒 Cửa Hàng Vật Phẩm & Skin</h2>
+      <p style="font-size: 12px; color: #4a5568; margin-bottom: 8px;">Skill & Vật phẩm: <b>100 Xu</b> | Skin nhân vật: <b>50 Xu</b>:</p>
+      <div class="shop-grid" id="shop-grid-container"></div>
+      <button style="padding: 8px 20px; background: #3182ce; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 8px;" onclick="closeShopModal()">Đóng</button>
     </div>
   </div>
 
@@ -768,11 +866,9 @@
     }
 
     function addCoinRandomly() {
-      // Tỷ lệ nhận xu khi trả lời đúng là 3%
       if (Math.random() < 0.03) {
         userCoins += 1;
         updateCoinDisplay();
-        // Hiệu ứng thông báo nhận xu nhỏ
         showCoinEffect();
       }
     }
@@ -792,6 +888,7 @@
         document.getElementById('unit-screen').style.display = 'block';
         initUnitGrid();
         updateCoinDisplay();
+        checkMissionAvailability();
       } else {
         document.getElementById('login-screen').style.display = 'flex';
         document.getElementById('unit-screen').style.display = 'none';
@@ -801,7 +898,6 @@
       }
     });
 
-    // Các hàm xử lý đăng nhập / đăng xuất
     function loginWithGoogle() {
       const provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth().signInWithPopup(provider).catch((error) => {
@@ -1408,6 +1504,192 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
     function loadGameProgress(gameType) {
       let saved = localStorage.getItem(`progress_${currentUnit}_${gameType}`);
       return saved ? parseInt(saved) : 0;
+    }
+
+    /* --- HỆ THỐNG NHIỆM VỤ ĐẶC BIỆT (15 TỪ MỚI, 2 LƯỢT X 4 PHƯƠNG PHÁP) --- */
+    const MISSION_INTERVAL = 2 * 60 * 60 * 1000;
+
+    function initMissionSystem() {
+      checkMissionAvailability();
+      setInterval(checkMissionAvailability, 60 * 1000);
+    }
+
+    function checkMissionAvailability() {
+      let lastMissionTime = parseInt(localStorage.getItem('vocabGame_lastMissionTime')) || 0;
+      let now = Date.now();
+      const btn = document.getElementById('mission-nav-btn');
+      if (btn) {
+        if (now - lastMissionTime >= MISSION_INTERVAL) {
+          btn.style.display = 'inline-block';
+        } else {
+          btn.style.display = 'none';
+        }
+      }
+    }
+
+    let missionVocabPool = [];
+    let missionQueue = [];
+    let missionIndex = 0;
+    let missionRound = 1;
+    let missionWrongCount = 0;
+
+    function startMission() {
+      stopAllCanvasGames();
+      srStopFcTimer();
+
+      // Lấy toàn bộ từ vựng gộp từ các unit hoặc từ unit hiện tại (chọn ngẫu nhiên 15 từ)
+      let allWords = [];
+      Object.keys(unitsData).forEach(uKey => {
+        let text = unitsData[uKey] || '';
+        let lines = text.trim().split('\n');
+        lines.forEach(line => {
+          let parts = line.split(':');
+          if (parts.length >= 2) {
+            let w = parts[0].trim();
+            let m = parts[1].trim();
+            if (w && m) allWords.push({ word: w, meaning: m });
+          }
+        });
+      });
+
+      if (allWords.length === 0) allWords = [...vocabList];
+      allWords.sort(() => 0.5 - Math.random());
+      missionVocabPool = allWords.slice(0, 15);
+
+      if (missionVocabPool.length === 0) {
+        alert("Chưa có đủ từ vựng để tạo nhiệm vụ!");
+        return;
+      }
+
+      missionRound = 1;
+      missionIndex = 0;
+      missionWrongCount = 0;
+      buildMissionQueue();
+
+      document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('game-mission').classList.add('active');
+      const missionBtn = document.getElementById('mission-nav-btn');
+      if (missionBtn) missionBtn.classList.add('active');
+
+      loadNextMissionStep();
+    }
+
+    function buildMissionQueue() {
+      missionQueue = [];
+      const methods = ['listen_type', 'type_word', 'choose_word', 'choose_meaning'];
+      missionVocabPool.forEach(item => {
+        methods.forEach(m => {
+          missionQueue.push({ item: item, method: m });
+        });
+      });
+      missionQueue.sort(() => 0.5 - Math.random());
+    }
+
+    function loadNextMissionStep() {
+      if (missionIndex >= missionQueue.length) {
+        if (missionRound === 1) {
+          missionRound = 2;
+          missionIndex = 0;
+          buildMissionQueue();
+          alert("🎉 Hoàn thành Lượt 1 nhiệm vụ! Bắt đầu Lượt 2 để củng cố.");
+          loadNextMissionStep();
+          return;
+        } else {
+          totalCoins += 5;
+          updateCoinDisplay();
+          playCoinSound();
+          alert("🏆 Xuất sắc! Hoàn thành 2 lượt x 4 phương pháp cho 15 từ nhiệm vụ. Nhận thưởng 🪙 +5 Xu!");
+          localStorage.setItem('vocabGame_lastMissionTime', Date.now());
+          const missionBtn = document.getElementById('mission-nav-btn');
+          if (missionBtn) missionBtn.style.display = 'none';
+          switchTab('scramble');
+          return;
+        }
+      }
+
+      const step = missionQueue[missionIndex];
+      const container = document.getElementById('mission-content-area');
+      document.getElementById('mission-question').innerText = `🎯 Nhiệm vụ (Lượt ${missionRound}/2) - Câu ${missionIndex + 1}/${missionQueue.length}`;
+      container.innerHTML = '';
+
+      if (step.method === 'listen_type') {
+        speak(step.item.word);
+        container.innerHTML = `
+          <div style="margin-bottom:12px;"><button class="audio-btn" onclick="speak('${step.item.word}')">🔊 Nghe phát âm</button></div>
+          <div style="font-size:14px; color:#4a5568; margin-bottom:8px;">Gõ từ tiếng Anh bạn nghe được:</div>
+          <input type="text" id="mission-input" class="type-input" placeholder="Gõ từ..." autocomplete="off">
+          <button style="margin-top:15px; width:100%; padding:12px; background:#38a169; color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="checkMissionAnswer('${step.item.word}')">Kiểm tra</button>
+        `;
+      } else if (step.method === 'type_word') {
+        container.innerHTML = `
+          <div style="font-size:14px; color:#718096;">Nghĩa tiếng Việt:</div>
+          <div style="font-size:22px; font-weight:bold; color:#2b6cb0; margin-bottom:12px;">${step.item.meaning}</div>
+          <input type="text" id="mission-input" class="type-input" placeholder="Gõ từ Tiếng Anh..." autocomplete="off">
+          <button style="margin-top:15px; width:100%; padding:12px; background:#38a169; color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="checkMissionAnswer('${step.item.word}')">Kiểm tra</button>
+        `;
+      } else if (step.method === 'choose_word') {
+        container.innerHTML = `
+          <div style="font-size:14px; color:#718096;">Nghĩa tiếng Việt:</div>
+          <div style="font-size:22px; font-weight:bold; color:#2b6cb0; margin-bottom:15px;">${step.item.meaning}</div>
+          <div class="options-grid" id="mission-opts"></div>
+        `;
+        renderMissionChoices(step.item.word, 'word');
+      } else if (step.method === 'choose_meaning') {
+        speak(step.item.word);
+        container.innerHTML = `
+          <div style="font-size:24px; font-weight:bold; color:#2d3748; margin-bottom:15px;">${step.item.word}</div>
+          <div class="options-grid" id="mission-opts"></div>
+        `;
+        renderMissionChoices(step.item.meaning, 'meaning');
+      }
+
+      const inputEl = document.getElementById('mission-input');
+      if (inputEl) {
+        inputEl.focus();
+        inputEl.onkeyup = (e) => { if (e.key === 'Enter') checkMissionAnswer(step.item.word); };
+      }
+    }
+
+    function renderMissionChoices(correctVal, type) {
+      const opts = document.getElementById('mission-opts');
+      let choices = [correctVal];
+      let otherVals = missionVocabPool.map(item => type === 'word' ? item.word : item.meaning).filter(v => v !== correctVal);
+      otherVals.sort(() => 0.5 - Math.random());
+      choices = choices.concat(otherVals.slice(0, 3)).sort(() => 0.5 - Math.random());
+
+      choices.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn'; btn.innerText = c;
+        btn.onclick = () => {
+          if (c === correctVal) {
+            playSoundCorrect();
+            addCoinRandomly();
+            btn.classList.add('correct-ans');
+            setTimeout(() => {
+              missionIndex++;
+              loadNextMissionStep();
+            }, 800);
+          } else {
+            playSoundWrong();
+            btn.classList.add('wrong-ans');
+          }
+        };
+        opts.appendChild(btn);
+      });
+    }
+
+    function checkMissionAnswer(correctWord) {
+      const val = document.getElementById('mission-input').value.trim().toLowerCase();
+      if (val === correctWord.toLowerCase()) {
+        playSoundCorrect();
+        addCoinRandomly();
+        missionIndex++;
+        loadNextMissionStep();
+      } else {
+        playSoundWrong();
+        alert(`❌ Chưa chính xác! Đáp án đúng là: "${correctWord}"`);
+      }
     }
 
     /* 0. GHÉP TỪ */
@@ -2055,19 +2337,75 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
       return pos;
     }
 
-    /* 9. RPG CHIẾN ĐẤU */
+    /* 9. RPG CHIẾN ĐẤU (Chuẩn nhanchiaupdate.html) */
     const BOSS_TYPES = [
       { name: "Nấm Ma", icon: "🍄", baseHp: 80 }, { name: "Nhện Độc", icon: "🕷️", baseHp: 90 },
       { name: "Goblin", icon: "👺", baseHp: 100 }, { name: "Rồng Đỏ", icon: "🐲", baseHp: 120 },
       { name: "Chúa Tể Ác Mộng", icon: "👿", baseHp: 150 }
     ];
 
-    let rpgHero = { lvl: 1, hp: 100, maxHp: 100, exp: 0 };
+    const ALL_SKILLS = [
+      { id: 'skill_1', name: 'Hỏa Cầu', icon: '🔥', type: 'skill', price: 100 },
+      { id: 'skill_2', name: 'Băng Giá', icon: '❄️', type: 'skill', price: 100 },
+      { id: 'skill_3', name: 'Sét Đánh', icon: '⚡', type: 'skill', price: 100 },
+      { id: 'skill_4', name: 'Phi Kiếm', icon: '🗡️', type: 'skill', price: 100 },
+      { id: 'skill_5', name: 'Quả Cầu Năng Lượng', icon: '🔮', type: 'skill', price: 100 },
+      { id: 'skill_6', name: 'Thiên Thạch', icon: '☄️', type: 'skill', price: 100 },
+      { id: 'skill_7', name: 'Lốc Xoáy', icon: '🌪️', type: 'skill', price: 100 },
+      { id: 'skill_8', name: 'Quả Cầu Ánh Sáng', icon: '🫧', type: 'skill', price: 100 },
+      { id: 'skill_9', name: 'Gươm Ánh Sáng', icon: '⚔️', type: 'skill', price: 100 },
+      { id: 'skill_10', name: 'Rồng Kim Long', icon: '🐉', type: 'skill', price: 100 }
+    ];
+
+    const ALL_SKINS = [
+      { id: 'skin_drive_1', name: 'Nam Chiến Binh', url: 'https://lh3.googleusercontent.com/d/1BnTV5lSFDczPcC_sc5WxJI2olS6fAssQ', type: 'skin_img', price: 50 },
+      { id: 'skin_drive_2', name: 'Nữ Chiến Binh', url: 'https://lh3.googleusercontent.com/d/1zU8O3Y8i26jmCMX16v3Rj1HXFt2wNt1D', type: 'skin_img', price: 50 },
+      { id: 'skin_icon_1', name: 'Nam Kiếm Sĩ', icon: '🤺', type: 'skin_icon', price: 50 },
+      { id: 'skin_icon_2', name: 'Nàng Tiên Cá', icon: '🧞‍♀️', type: 'skin_icon', price: 50 },
+      { id: 'skin_icon_3', name: 'Nam Phù Thủy', icon: '🧙‍♂️', type: 'skin_icon', price: 50 },
+      { id: 'skin_icon_4', name: 'Nữ Sĩ Quan', icon: '💂‍♀️', type: 'skin_icon', price: 50 },
+      { id: 'skin_icon_5', name: 'Nam Hiệp Sĩ', icon: '🦸‍♂️', type: 'skin_icon', price: 50 },
+      { id: 'skin_icon_6', name: 'Nữ Anh Hùng', icon: '🏂️', type: 'skin_icon', price: 50 },
+      { id: 'skin_icon_7', name: 'Nam Ninja', icon: '🥷', type: 'skin_icon', price: 50 },
+      { id: 'skin_icon_8', name: 'Tiên Nữ', icon: '🧚‍♀️', type: 'skin_icon', price: 50 }
+    ];
+
+    let rpgHero = { 
+      lvl: 1, hp: 100, maxHp: 100, exp: 0, 
+      equippedSkill: ALL_SKILLS[0],
+      equippedSkin: ALL_SKINS[0] 
+    };
+
     let rpgBoss = { name: "Boss", icon: "🍄", lvl: 1, hp: 100, maxHp: 100 };
     let rpgBattleTarget = null, isRpgBusy = false;
 
+    let playerBag = JSON.parse(localStorage.getItem('vocab_rpg_player_bag')) || [
+      { id: 'hp_potion', name: 'Bình Máu Lớn', icon: '🧪', type: 'hp', count: 2 },
+      { id: 'revive_card', name: 'Thẻ Hồi Sinh', icon: '🛡️', type: 'revive', count: 1 },
+      { id: 'skill_1', name: 'Hỏa Cầu', icon: '🔥', type: 'skill', count: 1 },
+      { id: 'skin_drive_1', name: 'Nam Chiến Binh', url: 'https://lh3.googleusercontent.com/d/1BnTV5lSFDczPcC_sc5WxJI2olS6fAssQ', type: 'skin_img', count: 1 }
+    ];
+
+    function saveBag() {
+      localStorage.setItem('vocab_rpg_player_bag', JSON.stringify(playerBag));
+      updateBagTotalCount();
+    }
+
+    function updateBagTotalCount() {
+      const total = playerBag.reduce((sum, item) => sum + item.count, 0);
+      const el = document.getElementById('bag-total-count');
+      if (el) el.innerText = total;
+    }
+
+    function addBagItem(newItem) {
+      let existing = playerBag.find(i => i.id === newItem.id);
+      if (existing) existing.count += 1;
+      else playerBag.push({ ...newItem, count: 1 });
+      saveBag();
+    }
+
     function loadRpgProgress() {
-      const saved = localStorage.getItem('rpg_hero_save');
+      const saved = localStorage.getItem('vocab_rpg_hero_save');
       if (saved) {
         try {
           const data = JSON.parse(saved);
@@ -2075,24 +2413,43 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
           rpgHero.hp = data.hp || (100 + (rpgHero.lvl - 1) * 15);
           rpgHero.maxHp = 100 + (rpgHero.lvl - 1) * 15;
           rpgHero.exp = data.exp || 0;
+          if (data.equippedSkillId) {
+            let foundSkill = ALL_SKILLS.find(s => s.id === data.equippedSkillId);
+            if (foundSkill) rpgHero.equippedSkill = foundSkill;
+          }
+          if (data.equippedSkinId) {
+            let foundSkin = ALL_SKINS.find(s => s.id === data.equippedSkinId);
+            if (foundSkin) rpgHero.equippedSkin = foundSkin;
+          }
         } catch(e) {}
       }
+      updateBagTotalCount();
     }
 
     function saveRpgProgress() {
-      localStorage.setItem('rpg_hero_save', JSON.stringify({ lvl: rpgHero.lvl, hp: rpgHero.hp, exp: rpgHero.exp }));
-    }
-
-    function getSkillInfo(lvl) {
-      if (lvl <= 5) return { name: `Hỏa Cầu 🔥`, icon: "🔥", tier: 1 };
-      if (lvl <= 10) return { name: `Băng Giá ❄️`, icon: "❄️", tier: 2 };
-      if (lvl <= 15) return { name: `Sét Đánh ⚡`, icon: "⚡", tier: 3 };
-      if (lvl <= 20) return { name: `Phi Kiếm 🗡️`, icon: "🗡️", tier: 4 };
-      return { name: `Rồng Kim 🐉`, icon: "🐉", tier: 5 };
+      localStorage.setItem('vocab_rpg_hero_save', JSON.stringify({ 
+        lvl: rpgHero.lvl, hp: rpgHero.hp, exp: rpgHero.exp,
+        equippedSkillId: rpgHero.equippedSkill.id,
+        equippedSkinId: rpgHero.equippedSkin.id 
+      }));
     }
 
     function initBattle() {
-      loadRpgProgress(); spawnRpgBoss(); updateRpgUI(); nextBattleTurn();
+      loadRpgProgress(); spawnRpgBoss(); updateRpgUI(); updateHeroSkinDisplay(); nextBattleTurn();
+    }
+
+    function updateHeroSkinDisplay() {
+      const wrapper = document.getElementById('rpg-hero-avatar-wrapper');
+      const nameLabel = document.getElementById('rpg-hero-name-label');
+      if (nameLabel) nameLabel.innerText = rpgHero.equippedSkin.name;
+      
+      if (wrapper) {
+        if (rpgHero.equippedSkin.type === 'skin_img') {
+          wrapper.innerHTML = `<img src="${rpgHero.equippedSkin.url}" alt="${rpgHero.equippedSkin.name}" class="rpg-hero-img" id="rpg-hero-img">`;
+        } else {
+          wrapper.innerHTML = `<div class="rpg-hero-avatar-text" id="rpg-hero-avatar-txt">${rpgHero.equippedSkin.icon}</div>`;
+        }
+      }
     }
 
     function spawnRpgBoss() {
@@ -2111,7 +2468,7 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
       document.getElementById('rpg-drop-exp').classList.remove('active');
       document.getElementById('rpg-portal').classList.remove('active');
       document.getElementById('rpg-boss').style.opacity = '1';
-      document.getElementById('rpg-hero').style.left = '30px';
+      document.getElementById('rpg-hero').style.left = '20px';
     }
 
     function updateRpgUI() {
@@ -2123,8 +2480,7 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
       document.getElementById('rpg-boss-hp-fill').style.width = Math.max(0, (rpgBoss.hp / rpgBoss.maxHp * 100)) + '%';
       document.getElementById('rpg-boss-hp-text').innerText = `${Math.ceil(rpgBoss.hp)}/${rpgBoss.maxHp}`;
 
-      const sInfo = getSkillInfo(rpgHero.lvl);
-      document.getElementById('rpg-skill-name').innerText = `Cấp ${rpgHero.lvl}: ${sInfo.name}`;
+      document.getElementById('rpg-skill-name').innerText = `${rpgHero.equippedSkill.name} ${rpgHero.equippedSkill.icon}`;
       document.getElementById('rpg-exp-fill').style.width = rpgHero.exp + '%';
       document.getElementById('rpg-exp-text').innerText = `${Math.floor(rpgHero.exp)}% / 100%`;
 
@@ -2137,51 +2493,65 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
       document.getElementById('battle-word').innerText = rpgBattleTarget.word;
       speak(rpgBattleTarget.word);
 
-      const opts = document.getElementById('battle-options'); opts.innerHTML = '';
-      let correctMeaning = rpgBattleTarget.meaning;
-      let otherMeanings = vocabList.filter(v => v.meaning !== correctMeaning).map(v => v.meaning);
-      otherMeanings.sort(() => 0.5 - Math.random());
-      
-      let choices = [correctMeaning, ...otherMeanings.slice(0, 5)];
-      choices.sort(() => 0.5 - Math.random());
+      const mode = Math.random() < 0.5 ? 'quiz' : 'typing';
+      const quizContainer = document.getElementById('battle-quiz-container');
+      const typingContainer = document.getElementById('battle-typing-container');
 
-      choices.forEach(c => {
-        const btn = document.createElement('button');
-        btn.className = 'opt-btn'; btn.innerText = c; btn.dataset.meaning = c;
-        btn.onclick = () => handleRpgAnswer(c, btn);
-        opts.appendChild(btn);
-      });
+      if (mode === 'quiz') {
+        quizContainer.style.display = 'block';
+        typingContainer.style.display = 'none';
+
+        const opts = document.getElementById('battle-options'); opts.innerHTML = '';
+        let correctMeaning = rpgBattleTarget.meaning;
+        let otherMeanings = vocabList.filter(v => v.meaning !== correctMeaning).map(v => v.meaning);
+        otherMeanings.sort(() => 0.5 - Math.random());
+        
+        let choices = [correctMeaning, ...otherMeanings.slice(0, 5)];
+        choices.sort(() => 0.5 - Math.random());
+
+        choices.forEach(c => {
+          const btn = document.createElement('button');
+          btn.className = 'opt-btn'; btn.innerText = c; btn.dataset.meaning = c;
+          btn.onclick = () => handleRpgAnswer(c);
+          opts.appendChild(btn);
+        });
+        document.getElementById('battle-status').innerText = "⚔️ Chọn đúng nghĩa tiếng Việt để tung Kỹ năng!";
+      } else {
+        quizContainer.style.display = 'none';
+        typingContainer.style.display = 'block';
+
+        const input = document.getElementById('battle-typing-input');
+        input.value = '';
+        input.focus();
+
+        input.onkeydown = (e) => {
+          if (e.key === 'Enter') {
+            handleRpgAnswer(input.value.trim());
+          }
+        };
+        document.getElementById('battle-status').innerText = "✏️ Gõ nghĩa tiếng Việt rồi bấm Enter để tấn công!";
+      }
     }
 
     function showRpgFloatingText(text, color, isHero) {
       const arena = document.getElementById('rpg-arena');
       const el = document.createElement('div');
       el.className = 'rpg-float-num'; el.innerText = text; el.style.color = color;
-      el.style.left = isHero ? '60px' : (arena.clientWidth - 90) + 'px'; el.style.bottom = '120px';
+      el.style.left = isHero ? '50px' : (arena.clientWidth - 80) + 'px'; el.style.bottom = '100px';
       arena.appendChild(el); setTimeout(() => el.remove(), 800);
     }
 
-    function handleRpgAnswer(selectedMeaning, clickedBtn) {
+    function handleRpgAnswer(selectedMeaning) {
       if (isRpgBusy) return;
       isRpgBusy = true; speak(rpgBattleTarget.word);
 
-      const allBtns = document.querySelectorAll('#battle-options .opt-btn');
-      const isCorrect = (selectedMeaning === rpgBattleTarget.meaning);
-
-      allBtns.forEach(b => {
-        b.disabled = true;
-        if (b.dataset.meaning === rpgBattleTarget.meaning) {
-          b.classList.add('correct-ans');
-        } else if (b === clickedBtn && !isCorrect) {
-          b.classList.add('wrong-ans');
-        }
-      });
+      const isCorrect = (selectedMeaning.toLowerCase() === rpgBattleTarget.meaning.toLowerCase());
 
       if (isCorrect) {
         playSoundCorrect();
         addCoinRandomly();
         castRpgSkill(() => {
-          let dmg = 20 + rpgHero.lvl * 3;
+          let dmg = 25 + rpgHero.lvl * 5;
           rpgBoss.hp = Math.max(0, rpgBoss.hp - dmg);
           showRpgFloatingText(`-${dmg}`, '#f59e0b', false);
           updateRpgUI();
@@ -2191,17 +2561,14 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
       } else {
         playSoundWrong();
         recordWrongWord(rpgBattleTarget);
-        let monsterDmg = 12 + rpgBoss.lvl * 2;
+        let monsterDmg = 15 + rpgBoss.lvl * 3;
         rpgHero.hp = Math.max(0, rpgHero.hp - monsterDmg);
         showRpgFloatingText(`-${monsterDmg}`, '#ef4444', true);
         updateRpgUI();
 
         if (rpgHero.hp <= 0) {
           setTimeout(() => {
-            alert(`💀 Bạn đã bị hạ gục! Tiến trình reset về Level 1.`);
-            rpgHero.lvl = 1; rpgHero.exp = 0; rpgHero.hp = 100;
-            saveRpgProgress(); spawnRpgBoss(); updateRpgUI();
-            isRpgBusy = false; nextBattleTurn();
+            checkHeroDeath();
           }, 1800);
         } else {
           setTimeout(() => { isRpgBusy = false; nextBattleTurn(); }, 1800);
@@ -2209,19 +2576,55 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
       }
     }
 
+    function checkHeroDeath() {
+      let reviveIdx = playerBag.findIndex(i => i.type === 'revive');
+      if (reviveIdx !== -1) {
+        if (confirm("💀 Anh hùng đã ngã xuống! Bạn có muốn dùng [Thẻ Hồi Sinh] trong kho để hồi sinh ngay không?")) {
+          useBagItem(reviveIdx, true);
+          isRpgBusy = false;
+          nextBattleTurn();
+          return;
+        }
+      }
+
+      if (userCoins >= 100) {
+        if (confirm(`💀 Anh hùng đã ngã xuống! Bạn có muốn dùng 100 Xu để hồi sinh giữ nguyên Level (Hiện có: ${userCoins} Xu)?`)) {
+          userCoins -= 100;
+          updateCoinDisplay();
+          rpgHero.hp = rpgHero.maxHp;
+          updateRpgUI();
+          alert("✨ Hồi sinh thành công! Anh hùng đã tràn đầy năng lượng trở lại!");
+          isRpgBusy = false;
+          nextBattleTurn();
+          return;
+        }
+      }
+
+      alert(`💀 Anh hùng đã bị hạ gục! Tiến trình RPG thiết lập lại về Level 1.`);
+      rpgHero.lvl = 1; rpgHero.exp = 0; rpgHero.hp = 100;
+      saveRpgProgress(); spawnRpgBoss(); updateRpgUI();
+      isRpgBusy = false; nextBattleTurn();
+    }
+
     function castRpgSkill(onComplete) {
       const arena = document.getElementById('rpg-arena');
-      const sInfo = getSkillInfo(rpgHero.lvl);
-      const count = Math.min(rpgHero.lvl, 5); let fired = 0;
+      const targetImg = document.getElementById('rpg-hero-img') || document.getElementById('rpg-hero-avatar-txt');
+      if (targetImg) {
+        targetImg.classList.add('attacking');
+        setTimeout(() => targetImg.classList.remove('attacking'), 400);
+      }
+
+      const icon = rpgHero.equippedSkill.icon;
+      const count = Math.min(rpgHero.lvl, 4); let fired = 0;
 
       let interval = setInterval(() => {
         fired++;
         const fx = document.createElement('div');
-        fx.className = 'rpg-skill-fx'; fx.innerText = sInfo.icon;
-        fx.style.left = '80px'; fx.style.bottom = (80 + Math.random() * 30) + 'px';
+        fx.className = 'rpg-skill-fx'; fx.innerText = icon;
+        fx.style.left = '60px'; fx.style.bottom = (60 + Math.random() * 20) + 'px';
         arena.appendChild(fx);
 
-        setTimeout(() => { fx.style.left = (arena.clientWidth - 100) + 'px'; }, 20);
+        setTimeout(() => { fx.style.left = (arena.clientWidth - 80) + 'px'; }, 20);
         setTimeout(() => { fx.remove(); }, 420);
 
         if (fired >= count) { clearInterval(interval); setTimeout(onComplete, 450); }
@@ -2233,13 +2636,25 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
       const dropHp = document.getElementById('rpg-drop-hp'), dropExp = document.getElementById('rpg-drop-exp');
       dropHp.classList.add('active'); dropExp.classList.add('active');
 
+      let droppedMsg = "";
+      if (Math.random() < 0.05) {
+        if (Math.random() < 0.5) {
+          addBagItem({ id: 'hp_potion', name: 'Bình Máu Lớn', icon: '🧪', type: 'hp' });
+          droppedMsg = "\n🎁 Nhặt được 1x Bình Máu Lớn (🧪)!";
+        } else {
+          let randomSkill = ALL_SKILLS[Math.floor(Math.random() * ALL_SKILLS.length)];
+          addBagItem(randomSkill);
+          droppedMsg = `\n🎁 Nhặt được Skill mới: ${randomSkill.name} (${randomSkill.icon})!`;
+        }
+      }
+
       setTimeout(() => {
         const heroEl = document.getElementById('rpg-hero');
-        heroEl.style.left = (document.getElementById('rpg-arena').clientWidth - 180) + 'px';
+        heroEl.style.left = (document.getElementById('rpg-arena').clientWidth - 150) + 'px';
 
         setTimeout(() => {
-          let hpAddPercent = Math.floor(Math.random() * 7) + 1;
-          let expAddPercent = Math.floor(Math.random() * 7) + 1;
+          let hpAddPercent = Math.floor(Math.random() * 10) + 5;
+          let expAddPercent = Math.floor(Math.random() * 5) + 3;
 
           let hpGain = Math.round(rpgHero.maxHp * (hpAddPercent / 100));
           rpgHero.hp = Math.min(rpgHero.maxHp, rpgHero.hp + hpGain);
@@ -2249,7 +2664,7 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
           showRpgFloatingText(`+${expAddPercent}% EXP`, '#38bdf8', true);
 
           if (rpgHero.exp >= 100) {
-            rpgHero.lvl = Math.min(100, rpgHero.lvl + 1);
+            rpgHero.lvl = Math.min(50, rpgHero.lvl + 1);
             rpgHero.exp -= 100;
             showRpgFloatingText(`LEVEL UP! Lv.${rpgHero.lvl}`, '#f59e0b', true);
           }
@@ -2257,11 +2672,13 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
           dropHp.classList.remove('active'); dropExp.classList.remove('active');
           updateRpgUI();
 
+          if (droppedMsg) alert("🎉 Hạ gục quái vật thành công!" + droppedMsg);
+
           const portal = document.getElementById('rpg-portal');
           portal.classList.add('active');
 
           setTimeout(() => {
-            heroEl.style.left = (document.getElementById('rpg-arena').clientWidth - 100) + 'px';
+            heroEl.style.left = '20px';
             setTimeout(() => {
               spawnRpgBoss(); updateRpgUI();
               isRpgBusy = false; nextBattleTurn();
@@ -2269,6 +2686,125 @@ hologram : ảnh toàn đạc 3D : In future, we might send _____ messages.`
           }, 600);
         }, 600);
       }, 500);
+    }
+
+    function openBagModal() {
+      const container = document.getElementById('bag-grid-container');
+      container.innerHTML = '';
+
+      if (playerBag.length === 0) {
+        container.innerHTML = `<div style="grid-column: span 3; color: #718096; padding: 15px; font-size: 12px;">Kho đồ đang trống! Hãy đánh quái hoặc mua sắm trong Cửa Hàng.</div>`;
+      } else {
+        playerBag.forEach((item, index) => {
+          const slot = document.createElement('div');
+          slot.className = 'bag-slot';
+          
+          let displayHtml = '';
+          if (item.type === 'skin_img') {
+            displayHtml = `<img src="${item.url}" class="item-img-preview">`;
+          } else {
+            displayHtml = `<div class="item-icon">${item.icon}</div>`;
+          }
+
+          slot.innerHTML = `
+            ${displayHtml}
+            <div class="item-name">${item.name}</div>
+            <div class="bag-item-count">${item.count}</div>
+          `;
+          slot.onclick = () => useBagItem(index);
+          container.appendChild(slot);
+        });
+      }
+      document.getElementById('bagModal').style.display = 'flex';
+    }
+
+    function closeBagModal() { document.getElementById('bagModal').style.display = 'none'; }
+
+    function useBagItem(index, isSystem = false) {
+      let item = playerBag[index];
+      if (item.type === 'hp') {
+        let healAmount = Math.round(rpgHero.maxHp * 0.5);
+        rpgHero.hp = Math.min(rpgHero.maxHp, rpgHero.hp + healAmount);
+        updateRpgUI();
+        alert(`✨ Đã dùng ${item.name}! Hồi phục ${healAmount} HP.`);
+      } else if (item.type === 'revive') {
+        rpgHero.hp = rpgHero.maxHp;
+        updateRpgUI();
+        alert(`🛡️ Đã dùng Thẻ Hồi Sinh! Hồi phục 100% HP.`);
+      } else if (item.type === 'skill') {
+        rpgHero.equippedSkill = item;
+        updateRpgUI();
+        alert(`⚔️ Đã trang bị Skill chiến đấu mới: ${item.name} (${item.icon})!`);
+      } else if (item.type === 'skin_img' || item.type === 'skin_icon') {
+        rpgHero.equippedSkin = item;
+        updateHeroSkinDisplay();
+        updateRpgUI();
+        alert(`👑 Đã trang bị Skin nhân vật mới: ${item.name}!`);
+      }
+
+      if (item.type !== 'skin_img' && item.type !== 'skin_icon') {
+        item.count--;
+        if (item.count <= 0) playerBag.splice(index, 1);
+      }
+      saveBag();
+      if (!isSystem) openBagModal();
+    }
+
+    function openShopModal() {
+      const container = document.getElementById('shop-grid-container');
+      container.innerHTML = '';
+
+      const shopItems = [
+        { id: 'hp_potion', name: 'Bình Máu Lớn', icon: '🧪', type: 'hp', price: 100 },
+        { id: 'revive_card', name: 'Thẻ Hồi Sinh', icon: '🛡️', type: 'revive', price: 100 },
+        ...ALL_SKILLS,
+        ...ALL_SKINS
+      ];
+
+      shopItems.forEach(item => {
+        const slot = document.createElement('div');
+        slot.className = 'shop-slot';
+
+        let displayHtml = '';
+        if (item.type === 'skin_img') {
+          displayHtml = `<img src="${item.url}" class="item-img-preview">`;
+        } else {
+          displayHtml = `<div class="item-icon">${item.icon}</div>`;
+        }
+
+        slot.innerHTML = `
+          ${displayHtml}
+          <div class="item-name">${item.name}</div>
+          <div class="item-price">🪙 ${item.price} Xu</div>
+        `;
+        slot.onclick = () => buyShopItem(item);
+        container.appendChild(slot);
+      });
+
+      document.getElementById('shopModal').style.display = 'flex';
+    }
+
+    function closeShopModal() { document.getElementById('shopModal').style.display = 'none'; }
+
+    function buyShopItem(item) {
+      if (userCoins < item.price) {
+        alert(`❌ Bạn không đủ ${item.price} Xu để mua vật phẩm này!`);
+        return;
+      }
+
+      userCoins -= item.price;
+      updateCoinDisplay();
+
+      if (item.type === 'skin_img') {
+        addBagItem({ id: item.id, name: item.name, url: item.url, type: item.type, price: item.price });
+      } else if (item.type === 'skin_icon') {
+        addBagItem({ id: item.id, name: item.name, icon: item.icon, type: item.type, price: item.price });
+      } else {
+        addBagItem({ id: item.id, name: item.name, icon: item.icon, type: item.type, price: item.price });
+      }
+
+      playSoundCorrect();
+      alert(`🎉 Mua thành công [${item.name}]! Đã được chuyển vào Kho đồ.`);
     }
 
     /* =========================================================
